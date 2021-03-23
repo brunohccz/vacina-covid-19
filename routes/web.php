@@ -13,8 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::view('/{spa?}', 'layouts.app')->where('spa', '^(?!api).*$');
+Route::view('/{spa?}', 'app')->where('spa', '^(?!api).*$');
