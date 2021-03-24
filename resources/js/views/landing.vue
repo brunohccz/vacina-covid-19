@@ -23,9 +23,31 @@
             </div>
 
             <span class="total-vaccinate">
-                100 pessoas vacinadas.
+                {{ vaccinates.length || 0 }} pessoas vacinadas.
                 <img src="/images/icons/heart.png" alt="Coração" />
             </span>
         </div>
     </div>
 </template>
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+
+export default {
+    created() {
+        this.fetch();
+    },
+
+    methods: {
+        ...mapActions({
+            fetch: "vaccinate/fetch"
+        })
+    },
+
+    computed: {
+        ...mapGetters({
+            vaccinates: "vaccinate/data"
+        })
+    }
+};
+</script>
