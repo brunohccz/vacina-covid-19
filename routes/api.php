@@ -1,7 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\VaccineController;
+use App\Http\Controllers\VaccinateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::resource('patients', PatientController::class);
+Route::resource('vaccines', VaccineController::class);
+
+Route::resource('vaccinates', VaccinateController::class)
+    ->only('index', 'store');
