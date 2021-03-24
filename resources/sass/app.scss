@@ -59,10 +59,6 @@ textarea {
     margin-bottom: 3.2rem;
 }
 
-.logo-container img {
-    height: 10rem;
-}
-
 .logo-container h2 {
     font-weight: 500;
     font-size: 2.4rem;
@@ -680,6 +676,10 @@ textarea {
     width: calc(100% - 3.2rem);
 }
 
+.invalid-feedback {
+    color: var(--color-danger);
+}
+
 // Article Item
 
 article.item {
@@ -817,7 +817,6 @@ article.item.small header .buttons a.delete:hover {
 
     article.item footer p strong {
         display: initial;
-        margin-left: 1.6rem;
     }
 
     article.item footer button {

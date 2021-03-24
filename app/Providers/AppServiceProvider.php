@@ -8,6 +8,7 @@ use App\Vaccinate\Validators\DoseIntervalVaccinateValidator;
 use App\Vaccinate\Validators\DoseLimitVaccinateValidator;
 use App\Vaccinate\Validators\DueVaccineValidator;
 use App\Vaccinate\Validators\SameManufacturerVaccinateValidator;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,6 +37,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        ResourceCollection::withoutWrapping();
     }
 }

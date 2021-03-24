@@ -1,9 +1,6 @@
 <template>
     <div id="page-form" class="container">
-        <page-header
-            title="Cadastro de vacina."
-            description="Preencha todos os dados com atenção!"
-        />
+        <page-header title="Alteração de dados da vacina." />
         <main>
             <form @submit.prevent="onSubmit">
                 <fieldset>
@@ -62,7 +59,7 @@
                         Preencha todos os dados
                     </p>
                     <button type="submit">
-                        Cadastrar
+                        Alterar
                     </button>
                 </footer>
             </form>
@@ -85,13 +82,23 @@ export default {
         })
     }),
 
+    async created() {
+        const vaccine = await this.fetch(this.$route.params.id);
+
+        this.form.fill(vaccine);
+    },
+
     methods: {
         ...mapActions({
-            create: "vaccine/create"
+            fetch: "vaccine/show",
+            update: "vaccine/update"
         }),
 
         onSubmit() {
-            this.create(this.form);
+            this.update({
+                id: this.$route.params.id,
+                form: this.form
+            });
         }
     },
 

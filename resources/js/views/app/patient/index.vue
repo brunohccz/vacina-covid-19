@@ -7,48 +7,79 @@
                     Cadastrar
                 </router-link>
             </div>
-            <article class="item small">
+            <article
+                v-for="patient in patients"
+                :key="patient.id"
+                class="item small"
+            >
                 <header>
                     <div>
-                        <strong>Bruno Henrique Cerciliar</strong>
-                        <span>
-                            23 anos
-                        </span>
+                        <strong>{{ patient.name }}</strong>
+                        <span> {{ patient.age }} anos </span>
                     </div>
                     <div class="buttons">
-                        <a class="edit" href="">Editar</a>
-                        <a class="delete" href="">Excluir</a>
+                        <router-link
+                            :to="{
+                                name: 'app.patient.edit',
+                                params: { id: patient.id }
+                            }"
+                            class="edit"
+                        >
+                            Editar
+                        </router-link>
+                        <a
+                            @click="confirmDestroy(patient)"
+                            class="delete"
+                            href="javascript:;"
+                            >Excluir</a
+                        >
                     </div>
                 </header>
             </article>
-            <article class="item small">
+            <article v-if="patients.length === 0" class="item">
                 <header>
-                    <div>
-                        <strong>Bruno Henrique Cerciliar</strong>
-                        <span>
-                            23 anos
-                        </span>
-                    </div>
-                    <div class="buttons">
-                        <a class="edit" href="">Editar</a>
-                        <a class="delete" href="">Excluir</a>
-                    </div>
-                </header>
-            </article>
-            <article class="item small">
-                <header>
-                    <div>
-                        <strong>Bruno Henrique Cerciliar</strong>
-                        <span>
-                            23 anos
-                        </span>
-                    </div>
-                    <div class="buttons">
-                        <a class="edit" href="">Editar</a>
-                        <a class="delete" href="">Excluir</a>
-                    </div>
+                    <strong>Nenhum paciente cadastrado.</strong>
                 </header>
             </article>
         </main>
     </div>
 </template>
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+import Swal from "sweetalert2";
+
+export default {
+    created() {
+        this.fetch();
+    },
+
+    methods: {
+        ...mapActions({
+            fetch: "patient/fetch",
+            destroy: "patient/destroy"
+        }),
+
+        async confirmDestroy(patient) {
+            const response = await Swal.fire({
+                title: "Excluir paciente",
+                text: `Realmente deseja excluir o paciente ${patient.name} ?`,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Sim",
+                cancelButtonText: "Cancelar"
+            });
+
+            if (response.isConfirmed) {
+                this.destroy(patient);
+            }
+        }
+    },
+
+    computed: {
+        ...mapGetters({
+            patients: "patient/data"
+        })
+    }
+};
+</script>

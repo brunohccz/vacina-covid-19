@@ -18,9 +18,9 @@ class SameManufacturerVaccinateValidator implements VaccinateValidator
      */
     public function validate(Patient $patient, Vaccine $vaccine)
     {
-        if ($patient->wasVaccinated && $patient->vaccinate->id !== $vaccine->id) {
+        if ($patient->wasVaccinated && $patient->vaccinate->vaccine->id !== $vaccine->id) {
             throw ValidationException::withMessages([
-                'vaccinate' => 'Paciente vacinado com vacina de outro fabricante.'
+                'vaccinate' => 'Paciente já vacinado com vacina de outro fabricante.'
             ]);
         }
     }

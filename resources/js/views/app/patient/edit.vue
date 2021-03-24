@@ -1,6 +1,6 @@
 <template>
     <div id="page-form" class="container">
-        <page-header title="Cadastro de paciente." />
+        <page-header title="Alteração de dados do paciente." />
         <main>
             <form @submit.prevent="onSubmit">
                 <fieldset>
@@ -32,7 +32,7 @@
                         Preencha todos os dados
                     </p>
                     <button type="submit">
-                        Cadastrar
+                        Atualizar
                     </button>
                 </footer>
             </form>
@@ -52,13 +52,23 @@ export default {
         })
     }),
 
+    async created() {
+        const patient = await this.fetch(this.$route.params.id);
+
+        this.form.fill(patient);
+    },
+
     methods: {
         ...mapActions({
-            create: "patient/create"
+            fetch: "patient/show",
+            update: "patient/update"
         }),
 
         onSubmit() {
-            this.create(this.form);
+            this.update({
+                id: this.$route.params.id,
+                form: this.form
+            });
         }
     },
 

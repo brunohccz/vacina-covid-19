@@ -25,6 +25,11 @@ export default [
                         path: "create",
                         name: "app.patient.create",
                         component: page("app/patient/create")
+                    },
+                    {
+                        path: ":id",
+                        name: "app.patient.edit",
+                        component: page("app/patient/edit")
                     }
                 ]
             },
@@ -41,6 +46,11 @@ export default [
                         path: "create",
                         name: "app.vaccine.create",
                         component: page("app/vaccine/create")
+                    },
+                    {
+                        path: ":id",
+                        name: "app.vaccine.edit",
+                        component: page("app/vaccine/edit")
                     }
                 ]
             },

@@ -7,34 +7,82 @@
                     Cadastrar
                 </router-link>
             </div>
-            <article class="item small">
+            <article
+                v-for="vaccine in vaccines"
+                :key="vaccine.id"
+                class="item small"
+            >
                 <header>
                     <div>
-                        <strong>CORONAVAC</strong>
+                        <strong>{{ vaccine.manufacturer }}</strong>
                         <small>
-                            Lote: 1023 | Doses: 1204
+                            Lote: {{ vaccine.batch }} | Validade:
+                            {{ vaccine.due | formatDate }}
                         </small>
                     </div>
                     <div class="buttons">
-                        <a class="edit" href="">Editar</a>
-                        <a class="delete" href="">Excluir</a>
+                        <router-link
+                            :to="{
+                                name: 'app.vaccine.edit',
+                                params: { id: vaccine.id }
+                            }"
+                            class="edit"
+                        >
+                            Editar
+                        </router-link>
+                        <a
+                            @click="confirmDestroy(vaccine)"
+                            class="delete"
+                            href="javascript:;"
+                            >Excluir</a
+                        >
                     </div>
                 </header>
             </article>
-            <article class="item small">
+            <article v-if="vaccines.length === 0" class="item">
                 <header>
-                    <div>
-                        <strong>PFIZER</strong>
-                        <small>
-                            Lote: 1023 | Doses: 1204
-                        </small>
-                    </div>
-                    <div class="buttons">
-                        <a class="edit" href="">Editar</a>
-                        <a class="delete" href="">Excluir</a>
-                    </div>
+                    <strong>Nenhuma vacina cadastrada.</strong>
                 </header>
             </article>
         </main>
     </div>
 </template>
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+import Swal from "sweetalert2";
+
+export default {
+    created() {
+        this.fetch();
+    },
+
+    methods: {
+        ...mapActions({
+            fetch: "vaccine/fetch",
+            destroy: "vaccine/destroy"
+        }),
+
+        async confirmDestroy(vaccine) {
+            const response = await Swal.fire({
+                title: "Excluir vacina?",
+                text: `Realmente deseja excluir a vacina ${vaccine.name} ?`,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Sim",
+                cancelButtonText: "Cancelar"
+            });
+
+            if (response.isConfirmed) {
+                this.destroy(vaccine);
+            }
+        }
+    },
+
+    computed: {
+        ...mapGetters({
+            vaccines: "vaccine/data"
+        })
+    }
+};
+</script>

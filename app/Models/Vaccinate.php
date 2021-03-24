@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Vaccinate extends Model
 {
@@ -27,6 +28,22 @@ class Vaccinate extends Model
      * @var array
      */
     protected $casts = [
-        'vaccinated_at' => 'date',
+        'vaccinated_at' => 'datetime',
     ];
+
+    /**
+     * @return BelongsTo
+     */
+    public function patient(): BelongsTo
+    {
+        return $this->belongsTo(Patient::class)->withTrashed();
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function vaccine(): BelongsTo
+    {
+        return $this->belongsTo(Vaccine::class)->withTrashed();
+    }
 }

@@ -18,7 +18,7 @@ class CreateVaccinatesTable extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('vaccine_id');
             $table->unsignedInteger('times')->default(1);
-            $table->date('vaccinated_at')->nullable();
+            $table->timestamp('vaccinated_at')->nullable();
             $table->timestamps();
         });
     }

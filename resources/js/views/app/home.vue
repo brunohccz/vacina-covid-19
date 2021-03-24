@@ -2,29 +2,81 @@
     <div id="page-list" class="container">
         <page-header title="Relatório de vacinação." />
         <main>
-            <article class="item">
+            <article
+                v-for="vaccinate in vaccinates"
+                :key="vaccinate.id"
+                class="item"
+            >
                 <header>
                     <div>
-                        <strong>Bruno Henrique Cerciliar da Cruz</strong>
-                        <span>
-                            23 anos
-                        </span>
+                        <strong>{{ vaccinate.patient.name }}</strong>
+                        <span> {{ vaccinate.patient.age }} anos </span>
                     </div>
                 </header>
 
-                <p>Vacina: <strong>CORONAVAC</strong></p>
-                <p>1° Dose - 11 Dez, 2021</p>
+                <p>
+                    Vacina:
+                    <strong>{{ vaccinate.vaccine.manufacturer }}</strong>
+                </p>
+                <p>
+                    Vacinado {{ vaccinate.vaccinated_at | formatDateDistance }}
+                </p>
 
-                <footer>
+                <footer v-if="vaccinate.next">
                     <p>
                         Próxima dose
-                        <strong>20 Dez, 2021</strong>
+                        <strong>{{ vaccinate.next | formatDate }}</strong>
                     </p>
-                    <a onClick="{createNewConnection}" href="" target="blank_">
+                    <router-link
+                        v-if="canVaccinate(vaccinate.next)"
+                        :to="{
+                            name: 'vaccinate',
+                            params: { patient: vaccinate.patient.id }
+                        }"
+                    >
                         Vacinar
-                    </a>
+                    </router-link>
                 </footer>
+
+                <footer v-else>
+                    <p>Paciente tomou todas doses.</p>
+                </footer>
+            </article>
+            <article v-if="vaccinates.length === 0" class="item">
+                <header>
+                    <strong>Nenhum paciente vacinado :(</strong>
+                </header>
             </article>
         </main>
     </div>
 </template>
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+import { isToday, isPast } from "date-fns";
+
+export default {
+    created() {
+        this.fetch();
+    },
+
+    methods: {
+        ...mapActions({
+            fetch: "vaccinate/fetch",
+            store: "vaccinate/store"
+        }),
+
+        canVaccinate(datestring) {
+            const date = new Date(datestring);
+
+            return isToday(date) || isPast(date);
+        }
+    },
+
+    computed: {
+        ...mapGetters({
+            vaccinates: "vaccinate/data"
+        })
+    }
+};
+</script>

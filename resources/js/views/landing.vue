@@ -2,7 +2,7 @@
     <div id="page-landing">
         <div id="page-landing-content" class="container">
             <div class="logo-container">
-                <img src="/images/logo.png" alt="Proffy" />
+                <img src="/images/logo.png" alt="PRORADIS" />
                 <h2>Sistema para controle de vacinação.</h2>
             </div>
 
